@@ -585,6 +585,7 @@ window.addEventListener('unhandledrejection',e=>
     denied     : "Activation refusée par le serveur (401/403) — décoche « Verify JWT » sur l'Edge Function cv-activate, puis redéploie.",
     db_error   : "Le service d'activation n'a pas pu joindre la base. Réessaie dans un instant.",
     server_misconfigured : "Configuration serveur incomplète — ajoute le secret LIC_SALT dans Supabase → Edge Functions → Secrets, puis redéploie.",
+    bad_request : "Le service d'activation a refusé la requête — c'est le signe qu'une ancienne version de l'Edge Function est déployée. Redéploie cv-activate-edge-function.ts.",
     http       : "Le serveur d'activation a renvoyé une erreur."
   };
 
