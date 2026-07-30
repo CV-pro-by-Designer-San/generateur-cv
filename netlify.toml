@@ -1,0 +1,22 @@
+# Configuration Netlify — site statique, aucune étape de construction.
+# Le dépôt ne contient que index.html : Netlify le publie tel quel.
+
+[build]
+  publish = "."
+  command = ""
+
+# Le générateur charge ses polices et ses bibliothèques (html2canvas, jsPDF)
+# depuis des CDN, et contacte l'Edge Function Supabase pour les licences.
+# Ces en-têtes durcissent le site sans bloquer ces échanges.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Le générateur est une page unique : toute adresse ramène à elle.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
