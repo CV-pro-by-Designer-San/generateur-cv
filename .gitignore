@@ -1,0 +1,9 @@
+# Garde-fou : ces fichiers contiennent la phrase secrète des licences
+# ou des outils internes. Ils ne doivent JAMAIS partir dans le dépôt public.
+generateur-licences.html
+cv-activate-edge-function.ts
+cv-licences-supabase.sql
+test-activation.html
+generateur-cv.html
+*.sql
+*.ts
