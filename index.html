@@ -13,7 +13,7 @@
 <style>
   :root{
     --app-bg:#0f1115;--panel:#171a21;--panel-2:#1e222b;--line:#2a2f3a;
-    --txt:#e7e9ee;--txt-dim:#9aa1af;--accent:#c9a227;
+    --txt:#e7e9ee;--txt-dim:#9aa1af;--accent:#279bc9;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -389,7 +389,7 @@
     </svg>
     <h2 data-i18n="lockTitle">Template verrouillé</h2>
     <p data-i18n="lockText">Saisis le code de licence qui t'a été communiqué lors de ton achat pour débloquer l'édition et l'export.</p>
-    <input type="text" id="licIn" placeholder="ABNCV-XXXXXXXX-XXXXXX" autocomplete="off" spellcheck="false">
+    <input type="text" id="licIn" placeholder="DANCV-XXXXXXXX-XXXXXX" autocomplete="off" spellcheck="false">
     <button id="licBtn" data-i18n="lockBtn">Déverrouiller</button>
     <p id="licMsg"></p>
     <p class="lock-foot" data-i18n="lockFoot">Licence valable pour un seul ordinateur — une connexion internet est
@@ -485,11 +485,15 @@ window.addEventListener('unhandledrejection',e=>
   /* Contrôle de FORME seulement (préfixe et longueur) : il évite un aller-retour
      réseau sur une faute de frappe évidente. La vérification de la signature,
      elle, est faite par le serveur — impossible de la contourner en local. */
+  /* DANCV = codes actuels, ABNCV = codes émis avant le changement de préfixe.
+     Les deux restent valables : la signature ne porte que sur l'identifiant. */
+  const LIC_PREFIXES = ['DANCV','ABNCV'];
   function licShape(code){
     const c=licNorm(code);
-    if(c.slice(0,5)!=='ABNCV' || c.slice(5).length!==14) return null;
+    if(LIC_PREFIXES.indexOf(c.slice(0,5))<0 || c.slice(5).length!==14) return null;
     return c.slice(5,13);
   }
+  const licPrefix = code => licNorm(code).slice(0,5) || LIC_PREFIXES[0];
 
   /* ---- identité de la machine ----
      device_id : tiré au hasard une fois, conservé sur le poste.
@@ -558,7 +562,7 @@ window.addEventListener('unhandledrejection',e=>
     unlocked=true;
     document.body.setAttribute('data-lic','1');
     $('lock').classList.add('off');
-    $('licRef').textContent='ABNCV-'+base;
+    $('licRef').textContent=licPrefix(code)+'-'+base;
     $('licBadge').style.display='flex';
     try{ localStorage.setItem(LIC_STORE, licNorm(code)); }catch(_){}
   }
