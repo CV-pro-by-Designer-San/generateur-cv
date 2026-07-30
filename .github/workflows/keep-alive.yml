@@ -27,11 +27,13 @@ jobs:
       - name: Interroger la base
         env:
           URL: https://ykcxmplkybizezkxklxd.supabase.co
-          ANON: ${{ secrets.SUPABASE_ANON_KEY }}
+          # Clé « publiable » (nouveau format sb_publishable_…). Les anciennes
+          # clés JWT anon/service_role sont désactivées sur ce projet.
+          KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: |
           code=$(curl -s -o /tmp/out.txt -w "%{http_code}" --max-time 30 \
             "$URL/rest/v1/cv_licences?select=code_id&limit=1" \
-            -H "apikey: $ANON" -H "Authorization: Bearer $ANON")
+            -H "apikey: $KEY" -H "Authorization: Bearer $KEY")
           echo "Réponse HTTP : $code"
           if [ "$code" != "200" ]; then
             echo "::error::Le projet Supabase n'a pas répondu correctement (HTTP $code)."
